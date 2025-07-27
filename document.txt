@@ -1,0 +1,82 @@
+---PAGES---
+ home
+ services
+ partners
+ contact
+
+---SERVICES---
+1. Tender filling (eg. Support for bid submissions)
+2. Business proposal writing
+3. Interior design
+4. Branding services (e.g flyer design, posters, company branding)
+5. Events planning and management
+6. General supplies (eg food supply)
+7. Nutrition & supplements
+8. Wholesale distribution
+9. Business consultancy
+
+
+
+----HOME PAGE DESIGN----
+===============================
+HOME PAGE - ALDEON WORLD
+===============================
+
+TITLE:
+Aldeon World – Professional Services That Power Your Growth
+
+TAGLINE / HERO TEXT:
+From tender filling to interior design, branding to supplies – we deliver tailored business solutions with expertise and care.
+
+CTA BUTTON:
+[Explore Our Services]    [Enquire]
+
+---
+
+SECTION: ABOUT / INTRO
+Aldeon World is a Nairobi-based service company offering a wide range of professional, creative, and logistical services. Whether you're preparing a business proposal, organizing an event, or seeking reliable supply solutions, we provide dependable support built on experience and results.
+
+---
+
+SECTION: FEATURED SERVICES (Top 3)
+1. Tender Filling & Bid Submission  
+   - Navigate procurement with confidence.
+
+2. Interior Design & Finishing  
+   - Transforming spaces with thoughtful design.
+
+3. Branding & Events  
+   - Memorable visuals and professional execution.
+
+BUTTON: [View All Services]
+
+---
+
+SECTION: WHY CHOOSE US
+- Experienced in both government and private sector workflows.
+- Diverse service offerings tailored to businesses of all sizes.
+- Reliable, timely, and professional support.
+
+---
+
+SECTION: PARTNER HIGHLIGHT (Optional Preview)
+Trusted by organizations and individuals across Kenya.  
+[Logos or names of past collaborators] (optional here)
+
+BUTTON: [See Our Partners]
+
+---
+
+SECTION: CONTACT CTA
+Need a service quote or more info? We're just a message away.
+
+BUTTONS:
+[Enquire]    [Request a Service]
+
+---
+
+FOOTER PREVIEW (For Reference)
+- © 2025 Aldeon World. All rights reserved.
+- Email: info@aldeonworld.com
+- KEMU Hub, Nairobi
+

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enquire | Aldeon World</title>
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="global.css" />
+  <link rel="stylesheet" href="enquiry.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">
+      <img src="assets/logo.png" alt="Aldeon Logo" />
+    </a>
+    <h2 class="site-title">Aldeon World</h2>
+    <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span class="hamburger"></span>
+    </button>
+    <div class="overlay" data-visible="false"></div>
+    <nav class="main-nav" data-visible="false">
+      <a href="index.html">Home</a>
+      <a href="services.html">Our Services</a>
+      <a href="enquiry.html" class="active">Get a Quote</a>
+      <a href="contact.html">Contact Us</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="form-section">
+      <div class="container">
+        <div class="form-container">
+          <h2>Get in Touch</h2>
+          <div id="formStatus" class="status-message"></div>
+          <form id="enquiryForm" novalidate>
+        <div class="form-group">
+          <label for="name" class="required">Full Name / Organization</label>
+          <input type="text" id="name" name="name" required minlength="2" maxlength="100" 
+                 placeholder="John Doe or Company Name">
+        </div>
+        
+        <div class="form-group">
+          <label for="email" class="required">Email Address</label>
+          <input type="email" id="email" name="email" required 
+                 placeholder="company email / personal email">
+        </div>
+        
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" 
+                 placeholder="+254 700 000000">
+        </div>
+        
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" name="subject" 
+                 placeholder="Service you are enquiring about">
+        </div>
+        
+        <div class="form-group">
+          <label for="message" class="required">Your Message</label>
+          <textarea id="message" name="message" required 
+                    placeholder="Tell us more about your project or inquiry..."></textarea>
+        </div>
+        
+        <!-- Honeypot field for spam prevention -->
+        <div class="form-group" style="display: none;">
+          <label for="website">Website</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+        
+        <div class="form-group">
+          <button type="submit" class="cta" id="submitBtn">
+            <span class="btn-text">Send Message</span>
+          </button>
+        </div>
+      </form>
+      <div class="form-footer">
+        <p>We'll get back to you within 24-48 hours</p>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize Intersection Observer for scroll animations
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      // Observe elements with the 'fade-in' class
+      document.querySelectorAll('.fade-in').forEach(el => {
+        observer.observe(el);
+      });
+
+      // Mobile menu toggle
+      const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+      const mainNav = document.querySelector('.main-nav');
+      const overlay = document.querySelector('.overlay');
+
+      // Mobile menu functions
+      function toggleMenu(e) {
+        e.stopPropagation();
+        const isExpanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
+        
+        mobileMenuToggle.setAttribute('aria-expanded', !isExpanded);
+        mainNav.setAttribute('data-visible', !isExpanded);
+        
+        if (overlay) {
+          overlay.style.display = isExpanded ? 'none' : 'block';
+          overlay.setAttribute('data-visible', !isExpanded);
+        }
+        
+        document.body.style.overflow = isExpanded ? '' : 'hidden';
+        document.body.classList.toggle('menu-open', !isExpanded);
+      }
+
+      function closeMenu() {
+        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+        mainNav.setAttribute('data-visible', 'false');
+        
+        if (overlay) {
+          overlay.style.display = 'none';
+          overlay.setAttribute('data-visible', 'false');
+        }
+        
+        document.body.style.overflow = '';
+        document.body.classList.remove('menu-open');
+      }
+
+      // Initialize menu
+      if (mobileMenuToggle) {
+        mobileMenuToggle.style.display = 'flex';
+        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+        
+        mobileMenuToggle.addEventListener('click', toggleMenu);
+        
+        if (overlay) {
+          overlay.addEventListener('click', closeMenu);
+        }
+        
+        document.querySelectorAll('.main-nav a').forEach(link => {
+          link.addEventListener('click', closeMenu);
+        });
+        
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && mobileMenuToggle.getAttribute('aria-expanded') === 'true') {
+            closeMenu();
+          }
+        });
+        
+        window.addEventListener('resize', function() {
+          if (window.innerWidth > 768) {
+            mainNav.style.display = '';
+            mainNav.removeAttribute('data-visible');
+            mobileMenuToggle.setAttribute('aria-expanded', 'false');
+            
+            if (overlay) {
+              overlay.style.display = 'none';
+              overlay.setAttribute('data-visible', 'false');
+            }
+            
+            document.body.style.overflow = '';
+            document.body.classList.remove('menu-open');
+          } else {
+            mobileMenuToggle.style.display = 'flex';
+          }
+        });
+      }
+
+      // Form handling
+      const form = document.getElementById('enquiryForm');
+
+      if (!form) return;
+
+      function validateForm() {
+        let isValid = true;
+        const requiredFields = form.querySelectorAll('[required]');
+        
+        requiredFields.forEach(field => {
+          if (!field.value.trim()) {
+            showError(field, 'This field is required');
+            isValid = false;
+          } else if (field.type === 'email' && !isValidEmail(field.value)) {
+            showError(field, 'Please enter a valid email address');
+            isValid = false;
+          } else {
+            clearError(field);
+          }
+        });
+        
+        return isValid;
+      }
+
+      function isValidEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+      }
+
+      function showError(field, message) {
+        const formGroup = field.closest('.form-group');
+        if (!formGroup) return;
+        
+        let errorElement = formGroup.querySelector('.error-message');
+        if (!errorElement) {
+          errorElement = document.createElement('div');
+          errorElement.className = 'error-message';
+          formGroup.appendChild(errorElement);
+        }
+        
+        errorElement.textContent = message;
+        field.classList.add('error');
+      }
+
+      function clearError(field) {
+        const formGroup = field.closest('.form-group');
+        if (!formGroup) return;
+        
+        const errorElement = formGroup.querySelector('.error-message');
+        if (errorElement) {
+          errorElement.remove();
+        }
+        field.classList.remove('error');
+      }
+
+      function showStatus(message, type) {
+        const formStatus = document.getElementById('formStatus');
+        if (!formStatus) return;
+        
+        formStatus.textContent = message;
+        formStatus.className = 'status-message';
+        formStatus.classList.add(type);
+        formStatus.style.display = 'block';
+        
+        // Scroll to status message
+        formStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Auto-hide after 5 seconds for success messages
+        if (type === 'success') {
+          setTimeout(() => {
+            formStatus.textContent = '';
+            formStatus.className = 'status-message';
+            formStatus.style.display = 'none';
+          }, 5000);
+        }
+      }
+
+      // Form submission handler
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Check honeypot field
+        const honeypot = document.getElementById('website');
+        if (honeypot && honeypot.value) {
+          return; // Bot detected
+        }
+        
+        // Validate form
+        if (!validateForm()) {
+          showStatus('Please fill in all required fields correctly.', 'error');
+          return;
+        }
+        
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = submitBtn ? submitBtn.querySelector('.btn-text') : null;
+        
+        // Show loading state
+        if (submitBtn && btnText) {
+          submitBtn.disabled = true;
+          submitBtn.classList.add('loading');
+          btnText.textContent = 'Sending...';
+        }
+        
+        try {
+          const formData = new FormData(form);
+          const response = await fetch('process_enquiry.php', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: formData
+          });
+          
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            showStatus(result.message || 'Your message has been sent successfully! We\'ll get back to you soon.', 'success');
+            form.reset();
+          } else {
+            throw new Error(result.message || 'Failed to send message');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          showStatus(error.message || 'There was an error sending your message. Please try again later or contact us directly.', 'error');
+        } finally {
+          // Reset button state
+          if (submitBtn && btnText) {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('loading');
+            btnText.textContent = 'Send Message';
+          }
+        }
+      });
+      
+      // Real-time validation
+      form.querySelectorAll('input, textarea').forEach(input => {
+        input.addEventListener('input', function() {
+          if (this.checkValidity()) {
+            clearError(this);
+          }
+        });
+        
+        input.addEventListener('blur', function() {
+          if (this.required && !this.value.trim()) {
+            showError(this, 'This field is required');
+          } else if (this.type === 'email' && this.value && !isValidEmail(this.value)) {
+            showError(this, 'Please enter a valid email address');
+          } else {
+            clearError(this);
+          }
+        });
+      });
+    });
+  </script>
+  
+  <style>
+  /* Additional inline styles for error messages */
+  .error-message {
+    color: #ef4444;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    display: none;
+  }
+  
+
+  
+  /* Animation for status message */
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .status-message {
+    animation: slideDown 0.3s ease-out;
+  }
+  </style>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-section about">
+        <div class="footer-logo">
+          <img src="assets/logo.png" alt="Aldeon World" class="footer-logo-img">
+          <span class="footer-brand">Aldeon World</span>
+        </div>
+        <p class="footer-about-text">Empowering businesses with professional services in tender support, branding, interior design, and business consulting. We help you build, present, and grow with confidence.</p>
+        <h3 class="connect-title">Connect With Us</h3>
+        <div class="social-links">
+          <a href="https://wa.me/254716226297" target="_blank" class="social-link" aria-label="WhatsApp" title="Chat with us on WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+          <a href="https://x.com/aldeonworld" target="_blank" class="social-link" aria-label="X (Twitter)" title="Follow us on X (Twitter)">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="https://www.instagram.com/aldeon.world/" target="_blank" class="social-link" aria-label="Instagram" title="Follow us on Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/aldeon-world-a03b9335a/" target="_blank" class="social-link" aria-label="LinkedIn" title="Connect with us on LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-section quick-links">
+        <h3 class="footer-heading">Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Our Services</a></li>
+          <li><a href="enquiry.html">Get a Quote</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section contact-info">
+        <h3 class="footer-heading">Contact Info</h3>
+        <ul class="contact-details">
+          <li class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>MJ 1 Business Park, Westlands Rd, 6th floor suite 606</span>
+          </li>
+          <li class="contact-item">
+            <i class="fas fa-phone"></i>
+            <a href="tel:+254716226297">+254 716 226297</a>
+          </li>
+          <li class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:info@aldeonworld.com">info@aldeonworld.com</a>
+          </li>
+          <li class="contact-item">
+            <i class="far fa-clock"></i>
+            <div>
+              <p>Mon-Fri: 8:00 AM - 5:00 PM</p>
+              <p>Sat: 10:00 AM - 2:00 PM</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; 2025 Aldeon World. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+      const mainNav = document.querySelector('.main-nav');
+      const overlay = document.querySelector('.overlay');
+      const navLinks = document.querySelectorAll('.main-nav a');
+
+      // Toggle menu function
+      const toggleMenu = (e) => {
+        if (e) e.stopPropagation();
+        if (!mobileMenuToggle || !mainNav) return;
+        
+        const isExpanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
+        const newState = !isExpanded;
+        
+        // Update button state
+        mobileMenuToggle.setAttribute('aria-expanded', newState);
+        
+        // Update menu and overlay visibility
+        mainNav.setAttribute('data-visible', newState);
+        if (overlay) {
+          overlay.setAttribute('data-visible', newState);
+          overlay.style.display = newState ? 'block' : 'none';
+        }
+        
+        // Toggle body scroll
+        document.body.style.overflow = newState ? 'hidden' : '';
+        document.body.classList.toggle('menu-open', newState);
+      };
+
+      // Close menu function
+      const closeMenu = () => {
+        if (!mobileMenuToggle || !mainNav) return;
+        
+        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+        mainNav.setAttribute('data-visible', 'false');
+        
+        if (overlay) {
+          overlay.setAttribute('data-visible', 'false');
+          overlay.style.display = 'none';
+        }
+        
+        document.body.style.overflow = '';
+        document.body.classList.remove('menu-open');
+      };
+
+      // Initialize menu state
+      if (mobileMenuToggle) {
+        mobileMenuToggle.style.display = 'flex';
+        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+        
+        // Toggle menu on button click
+        mobileMenuToggle.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleMenu(e);
+        });
+        
+        // Close menu when clicking on overlay
+        if (overlay) {
+          overlay.style.display = 'none';
+          overlay.addEventListener('click', function(e) {
+            e.stopPropagation();
+            closeMenu();
+          });
+        }
+        
+        // Close menu when clicking on nav links
+        navLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            // Allow default link behavior after closing menu
+            setTimeout(() => closeMenu(), 100);
+          });
+        });
+        
+        // Close menu with Escape key
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && mainNav.getAttribute('data-visible') === 'true') {
+            closeMenu();
+          }
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+          if (mainNav.getAttribute('data-visible') === 'true' && 
+              !mainNav.contains(e.target) && 
+              e.target !== mobileMenuToggle && 
+              !mobileMenuToggle.contains(e.target)) {
+            closeMenu();
+          }
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+          if (window.innerWidth > 768) {
+            // Reset styles on desktop
+            mainNav.style.display = '';
+            mainNav.removeAttribute('data-visible');
+            mobileMenuToggle.setAttribute('aria-expanded', 'false');
+            
+            if (overlay) {
+              overlay.style.display = 'none';
+              overlay.setAttribute('data-visible', 'false');
+            }
+            
+            document.body.style.overflow = '';
+            document.body.classList.remove('menu-open');
+          } else {
+            // Ensure mobile menu is properly initialized on mobile
+            mobileMenuToggle.style.display = 'flex';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
